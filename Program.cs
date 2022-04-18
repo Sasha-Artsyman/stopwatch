@@ -1,34 +1,30 @@
-﻿using System;
+using System;
+using System.Threading;
 
 class Program
 {
-    static void Main(string []args)
+    static void Main(string[] args)
     {
-        Console.Write("Input number of dices: ");
-        int numberOfDices = Convert.ToInt32(Console.ReadLine());
-
-        Console.Write("Enter the number of faces: ");
-        int numberOfFaces = Convert.ToInt32(Console.ReadLine());
-
-        Console.WriteLine("--------------------");
-
-        Random rnd = new Random();
-        int total = 0;
-
-        for (int i = 1; i <= numberOfDices;)
-        {
-            int dice = rnd.Next(0, numberOfFaces);
-            if (dice > 0)
-            {
-                Console.WriteLine("Dice " + i + ": " + dice);
-                i++;
-                total += dice;
-            }
-        }
-
-        Console.WriteLine("--------------------");
-        Console.WriteLine("Total: " + total);
+        Console.WriteLine("------ Stopwatch ------");
+        Console.WriteLine("(Enter) to start/finish");
 
         Console.ReadLine();
+        
+        TimerCallback timeS = new TimerCallback(PrintTime);
+
+        DateTime time0 = DateTime.Now;
+
+        Timer t = new Timer(
+        timeS, // объект делегата TimerCallback
+        time0, // информация для передачи в вызванный метод
+        0,     // период ожидания перед запуском (в миллисекундах)
+        20); // интервал между вызовами (в миллисекундах)
+
+        Console.ReadLine();
+    }
+
+    static void PrintTime(object state)
+    {
+        Console.WriteLine($"Time is: {DateTime.Now.Subtract(Convert.ToDateTime(state.ToString())):t}");
     }
 }
